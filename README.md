@@ -7,36 +7,36 @@ Here's an overview of the module's features:
 
 ## Features
 
-#     Payment Voucher Management:
+####     Payment Voucher Management:
         Creation of payment vouchers with auto-generated sequence numbers.
         Support for bank and cash journals with customizable prefixes (BPV for bank and CPV for cash).
         Automatic generation of cheque numbers for bank payment vouchers.
 
-#    Journal Entry Integration:
+####    Journal Entry Integration:
         Automatic creation of journal entries upon voucher confirmation.
         Linkage between payment vouchers and their corresponding journal entries.
 
- #   State Management:
+ ####   State Management:
         Payment vouchers have states (Draft, Posted) for better tracking and control.
         Restrict editing once a voucher is posted.
 
-#    Dynamic Views and Fields:
+####    Dynamic Views and Fields:
         Dynamic visibility of fields like cheque numbers based on journal type.
         Tree and form views for efficient voucher management.
         Notebook-style layout for organizing lines and details.
 
-#    Voucher Lines:
+####    Voucher Lines:
         Detailed line items for each voucher, including accounts, narrations, and amounts.
 
-#    User Interface Enhancements:
+####    User Interface Enhancements:
         Buttons for quick actions like viewing linked journal entries.
         Statusbar to indicate the state of the voucher.
 
-#    Menu and Action Integration:
+####    Menu and Action Integration:
         A dedicated menu item for Payment Voucher under the "Accounting > Miscellaneous" menu.
         Predefined action for accessing payment vouchers in tree and form views.
 
-# Usage
+### Usage
 
     Go to Accounting > Miscellaneous > Payment Voucher.
     Create a new payment voucher by selecting a journal, partner, and adding line items.
