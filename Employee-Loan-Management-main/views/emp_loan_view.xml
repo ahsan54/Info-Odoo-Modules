@@ -1,0 +1,188 @@
+<odoo>
+    <record id="sequence_employee_loan" model="ir.sequence">
+        <field name="name">Loan Sequence</field>
+        <field name="code">big.loan</field>
+        <field name="prefix">LOAN/</field>
+        <field name="padding">3</field>
+    </record>
+
+
+    <record id="view_account_move_journal_entry_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="journal_linking_id" invisible="move_type != 'entry' and not journal_linking_id"
+                       readonly="1"/>
+                <field name="journal_profit_id" invisible="move_type != 'entry' and not journal_profit_id"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="big_loan_form_view" model="ir.ui.view">
+        <field name="model">big.loan</field>
+        <field name="name">big.loan.form.view</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="compute_installments" string="Compute Installments" type="object"
+                            class="oe_highlight" invisible="state in ['hr_approved' , 'fin_approved' , 'rejected']"/>
+                    <button name="button_hr_approval" string="HR Approve" type="object" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="button_finance_approval" string="Finance Approve" type="object" class="oe_highlight"
+                            invisible="state != 'hr_approved' "/>
+                    <button string="Cancel" class="oe_link" name="button_cancel" type="object"
+                            invisible="state != 'fin_approved' "/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    <button name="action_open_journal_tree_view" type="object" class="oe_stat_button"
+                            icon="fa-id-card">
+                        <div class="o_stat_info">
+                            <field name="count_journal_entry" class="o_stat_value"/>
+                            <span class="o_stat_text">Journal Count</span>
+                        </div>
+                    </button>
+
+                    <button name="action_open_profit_jv_tree_view" type="object" class="oe_stat_button"
+                            icon="fa-id-card">
+                        <div class="o_stat_info">
+                            <field name="count_profit_jv" class="o_stat_value"/>
+                            <span class="o_stat_text">Profit Count</span>
+                        </div>
+                    </button>
+                </div>
+
+
+
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference_number"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state in ['hr_approved','fin_approved']"/>
+                            <field name="applied_date"/>
+                            <field name="loan_type_id"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="approved_date"/>
+                            <field name="department_id"/>
+                            <field name="company_id"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="loan_amount"/>
+                            <field name="is_interest"/>
+                            <field name="installments"/>
+                        </group>
+
+                        <group>
+                            <field name="rate"/>
+                            <field name="payment_start_day"/>
+                            <field name="interest_amount"/>
+                            <field name="total_loan"/>
+                        </group>
+
+                        <group>
+                            <field name="debit_account_id" invisible="state != 'hr_approved' "/>
+                            <field name="credit_account_id" invisible="state != 'hr_approved' "/>
+                            <field name="related_journal_entry" invisible="state != 'fin_approved' " readonly="1"/>
+                            <field name="related_profit_journal_entry" invisible="state != 'fin_approved' "
+                                   readonly="1"/>
+                        </group>
+
+
+                    </group>
+
+
+                    <notebook>
+                        <page string="Loan">
+                            <field name="loan_page_ids" widget="one2many_list">
+                                <tree delete="0" create="0" editable="bottom">
+                                    <field name="next_month_date" readonly="1"/>
+                                    <field name="principle_amount" readonly="1"/>
+                                    <field name="interest_amount" readonly="1"/>
+                                    <field name="next_instalment_size" readonly="1"/>
+                                    <field name="is_paid"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <group class="o_form_field o_form_field_float_right">
+                        <field name="total_loan"/>
+                        <field name="received_from_employee"/>
+                        <field name="remaining_amount"/>
+                    </group>
+
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" options="{'open_attachments': True}"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="big_loan_tree_view" model="ir.ui.view">
+        <field name="model">big.loan</field>
+        <field name="name">big.loan.tree.view</field>
+        <field name="arch" type="xml">
+            <tree>
+
+                <field name="employee_id"/>
+                <field name="applied_date"/>
+                <field name="loan_type_id"/>
+
+                <field name="approved_date"/>
+                <field name="department_id"/>
+                <field name="company_id"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_big_loan" model="ir.actions.act_window">
+        <field name="name">Apply Loan</field>
+        <field name="res_model">big.loan</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_big_loan_type" model="ir.actions.act_window">
+        <field name="name">Loan Types</field>
+        <field name="res_model">big.loan.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_loan_form_view"
+              name="Apply Big Loan"
+              parent="hr.menu_hr_root"
+              action="action_big_loan"
+              sequence="105"/>
+
+    <menuitem id="menu_big_loan"
+              name="Big Loan"
+              parent="menu_loan_form_view"
+              action="action_big_loan"
+              sequence="1"/>
+
+
+    <menuitem id="menu_loan_types"
+              name="Loan Types"
+              parent="menu_loan_form_view"
+              action="action_big_loan_type"
+              sequence="2"/>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fuel_tank,access.fuel.tank,model_fuel_tank,base.group_user,1,1,1,1
+access_add_fuel,access.add.fuel,model_add_fuel,base.group_user,1,1,1,1
+access_fuel_tank_lines,access.fuel.tank.lines,model_fuel_tank_lines,base.group_user,1,1,1,1

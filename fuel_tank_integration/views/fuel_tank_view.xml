@@ -1,0 +1,85 @@
+<odoo>
+    <record id="tree_fuel_tank" model="ir.ui.view">
+        <field name="name">fuel.tank.tree</field>
+        <field name="model">fuel.tank</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+                <field name="name"/>
+                <field name="location"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="form_fuel_tank" model="ir.ui.view">
+        <field name="name">fuel.tank.form</field>
+        <field name="model">fuel.tank</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <group string="Tank Details">
+                            <field name="name"/>
+                            <field name="location"/>
+                            <field name="date"/>
+                        </group>
+                        <group string="Fuel Details">
+                            <field name="capacity"/>
+                            <label for="liters"/>
+                            <div>
+                                <field name="liters" class="oe_inline"/>Liters
+                            </div>
+                            <field name="average_price" readonly="1"/>
+                                <button type="action" name="%(fuel_tank_integration.action_add_fuel_wizard)d" class="btn-primary" string="Add Fuel"/>
+                        </group>
+                        <group string="Last Filling Details">
+                            <field name="last_filling_date"/>
+                            <field name="last_filling_amount"/>
+                            <label for="last_filling_price"/>
+                            <div>
+                                <field name="last_filling_price" class="oe_inline"/>Per Liter
+                            </div>
+
+                        </group>
+                        <group string="Consumption Details">
+                            <label for="total_filling_fuel"/>
+                            <div>
+                                <field name="total_filling_fuel" class="oe_inline"/>%
+                            </div>
+                            <field name="last_added_fuel_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Fuel Filling History" name="Fuel_Filling_History">
+                            <field name="line_ids">
+                            <tree create="0" edit="0" sample="1">
+                                <field name="tank_last_added_fuel_date"/>
+                                <field name="tank_average_price" sum="Total"/>
+                                <field name="tank_liters" sum="Total"/>
+                            </tree>
+                                <form edit="0" create="0">
+                                        <group>
+                                            <field name="tank_last_added_fuel_date"/>
+                                            <field name="tank_average_price" sum="Total"/>
+                                            <field name="tank_liters" sum="Total"/>
+                                        </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_create_fuel_tank" model="ir.actions.act_window">
+        <field name="name">Fuel Tank</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fuel.tank</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="tree_fuel_tank"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">create a Record!</p>
+        </field>
+    </record>
+    <menuitem id="menu_fuel_tank" name="Fuel Tank" sequence="10" action="action_create_fuel_tank" parent="fleet.fleet_configuration"/>
+</odoo>

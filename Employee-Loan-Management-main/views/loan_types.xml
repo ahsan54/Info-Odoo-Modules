@@ -1,0 +1,43 @@
+<odoo>
+
+    <record id="big_loan_type_form_view" model="ir.ui.view">
+        <field name="model">big.loan.type</field>
+        <field name="name">big.loan.type.form.view</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="is_interest_payable" widget="boolean"/>
+                        </group>
+                        <group>
+                            <field name="policy_rate"/>
+                            <field name="no_of_installments"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="big_loan_type_tree_view" model="ir.ui.view">
+        <field name="model">big.loan.type</field>
+        <field name="name">big.loan.type.tree.view</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="is_interest_payable" widget="boolean"/>
+                <field name="policy_rate"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+
+</odoo>
+
+
