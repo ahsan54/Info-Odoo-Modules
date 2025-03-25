@@ -1,0 +1,27 @@
+Multi Lines On Jv:
+
+    def create_bill(self):
+        sale_order_id = self.env['sale.order'].browse(25)
+        for x in sale_order_id:
+            bill_lines = self._prepare_bill_line()
+            bill = self.env['account.move'].create({
+                'move_type': 'in_invoice',
+                'partner_id': x.partner_id.id,
+                'invoice_date': x.date_order,
+                'invoice_payment_term_id': x.payment_term_id.id,
+                'line_ids': bill_lines,
+            })
+            print(f'Bill: {bill}')
+
+    def _prepare_bill_line(self):
+        sale_order_id = self.env['sale.order'].browse(26)
+        line_ids = sale_order_id.order_line
+        bill_lines = []
+        for x in line_ids:
+            line = {
+                'product_id': x.product_template_id.id,
+                'quantity': x.product_uom_qty,
+                'price_unit': x.price_subtotal,
+            }
+            bill_lines.append((0, 0, line))
+        return bill_lines
